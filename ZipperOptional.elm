@@ -6,8 +6,16 @@ import MultiwayTreeZipper as Zipper exposing (Zipper)
 import Monocle.Optional as Optional exposing (Optional)
 
 
+type alias Index =
+    Int
+
+
+type alias Id =
+    List Int
+
+
 type alias NodeData =
-    { id : List Int, data : String }
+    { id : Id, data : String }
 
 
 treeOfZipper : Zipper a -> Tree a
@@ -29,7 +37,7 @@ tree2Zipper tree =
 -- id(List index)がある箇所のZipperを特定する。
 
 
-goToNodeById : List Int -> Maybe (Zipper a) -> Maybe (Zipper a)
+goToNodeById : Id -> Maybe (Zipper a) -> Maybe (Zipper a)
 goToNodeById id mZipper =
     List.foldl (\idx mz -> mz &> Zipper.goToChild idx) mZipper id
 
@@ -38,7 +46,7 @@ goToNodeById id mZipper =
 -- idで指定した箇所に対するOptional
 
 
-nodeOfTreeById : List Int -> Optional (Tree a) a
+nodeOfTreeById : Id -> Optional (Tree a) a
 nodeOfTreeById id =
     let
         -- treeをZipper化して、指定されたidまで潜る
